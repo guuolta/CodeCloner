@@ -13,9 +13,9 @@ dot_extension: 抽出対象のプログラミング言語の拡張子(.が必要
 '''
 def extract(engine_name, dot_extension):
     # データセットのパス
-    dataset_path = PathManager.get_path(engine_name, PathData.DATASETS_FOLDER_NAME)
+    dataset_path = PathManager.get_engine_path(engine_name, PathData.DATASETS_FOLDER_NAME)
     # プログラムファイルの保存先フォルダパス
-    program_path = PathManager.get_path(engine_name, PathData.PROGRAM_FOLDER_NAME)
+    program_path = PathManager.get_engine_path(engine_name, PathData.PROGRAM_FOLDER_NAME)
 
     # データセットのフォルダを再帰的に探索
     for root, dirs, files in os.walk(dataset_path):

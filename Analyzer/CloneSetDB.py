@@ -2,7 +2,8 @@ import os
 import re
 import sqlite3
 from dataclasses import dataclass
-import FileOperator
+import Common.FileManager as FileManager
+import Common.FileManager as PathManager
 
 CLONE_ID_HEADER = 'cloneID'
 
@@ -60,14 +61,14 @@ def inset_file(cur, clone_set):
 def get_clone_sets(file_path):
     files = []
 
-    contents = FileOperator.read_file(file_path)
+    contents = FileManager.read_file(file_path)
 
     is_clone_sets_started = False
 
     id = -1
     for line in contents:
         # クローンセットの部分が始まるか確認
-        if not is_clone_sets_started or line.startswith(Common.START_CLONE_SETS):
+        if not is_clone_sets_started or line.startswith(PathManager.START_CLONE_SETS):
             is_clone_sets_started = True
             continue
 

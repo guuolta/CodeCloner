@@ -23,7 +23,7 @@ def store_database(conn, engine_name, extension):
     DAO.create_table(cur, SourceFileData.TABLE_NAME, SourceFileData.SCHEMA)
 
     #　データベースにファイル情報を挿入
-    files = _get_source_files(PathManager.get_path(engine_name, PathData.CCFINDERSW_RESULT_FOLDER_NAME))
+    files = _get_source_files(PathManager.get_engine_path(engine_name, PathData.CCFINDERSW_RESULT_FOLDER_NAME))
     for file in files:
         _inset_file(cur, file)
 

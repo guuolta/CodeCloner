@@ -9,7 +9,7 @@ GIT_URL_FILE_NAME = 'datasets.txt'
 ''' git cloneするフォルダのパスを取得
 '''
 def get_git_url_path(engine_name):
-    return PathManager.get_path(engine_name, GIT_URL_FILE_NAME)
+    return PathManager.get_engine_path(engine_name, GIT_URL_FILE_NAME)
 
 ''' リポジトリ名(クローン後のフォルダ名)を取得
 '''

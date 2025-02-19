@@ -14,7 +14,7 @@ engine_name: 調査対象のゲームエンジン名
 def clone(engine_name):
     # URLリストのファイルパスを取得
     git_url_path = GitData.get_git_url_path(engine_name)
-    
+
     # フォルダが存在しない場合は終了
     if(not FileManager.Check_Folder_Path(git_url_path)):
         print("Folder not found")
@@ -23,7 +23,7 @@ def clone(engine_name):
     # URLリストのファイルを読み込む
     git_url_text_file = FileManager.read_file(git_url_path)
     # git cloneした結果を保存するフォルダパス
-    git_clone_directory_path = PathManager.get_path(engine_name, PathData.GIT_CLONE_FOLDER_NAME)
+    git_clone_directory_path = PathManager.get_engine_path(engine_name, PathData.GIT_CLONE_FOLDER_NAME)
 
     # テキストファイルから1行ずつURLを読み込む
     for line in git_url_text_file:
