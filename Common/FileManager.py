@@ -26,3 +26,8 @@ def create_file(path_name):
 '''
 def get_file_name(file_path):
     return os.path.splitext(os.path.basename(file_path))[0]
+
+''' 1階層目のディレクトリかどうかを判定
+'''
+def is_directory(folder_path, file_name):
+    return os.path.isdir(os.path.join(folder_path, file_name))

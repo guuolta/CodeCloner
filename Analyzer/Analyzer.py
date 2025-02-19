@@ -11,6 +11,9 @@ from CloneSet import CloneSetData as CloneSetData
 from Result import ResultDB as ResultDB
 from Result import ResultData as ResultData
 
+from CloneRate import CloneRateDB as CloneRateDB
+from CloneRate import CloneRateData as CloneRateData
+
 import CommonAnalyze as CommonAnalyze
 
 sys.path.append(os.path.abspath('../'))
@@ -19,7 +22,22 @@ from Common import PathManager as PathManager
 from CCFinderSW import CCFinderSWData as CCFinderSWData
 from DataBase import DAO as DAO
 
-def to_database(engine_name, folder_name, output_file_path):
+def Analyze(engine_name):
+    output_folder_path = CommonAnalyze.get_output_folder_path(engine_name)
+
+    for root, _, files in os.walk(output_folder_path):
+        for file in files:
+            if not file.endswith(CCFinderSWData.OUTPUT_EXTENSION):
+                continue
+            create_db(engine_name, FileManager.get_file_name(file), PathManager.join_path(root, file))
+
+    create_clone_rate_db(engine_name)
+
+''' CCFinderSWの解析結果ファイルをデータベースに登録
+'''
+def create_db(engine_name, folder_name, output_file_path):
+    FileManager.create_unique_folder(PathManager.get_path(engine_name, PathManager.DATA_BASE_FOLDER_NAME, folder_name))
+
     # データベースファイルを作成
     source_file_cur = sqlite3.connect(CommonAnalyze.get_db_path(engine_name, folder_name, SourceFileData.SOURCE_FILE_DB_NAME))
     clone_set_cur = sqlite3.connect(CommonAnalyze.get_db_path(engine_name, folder_name, CloneSetData.CLONE_SETS_DB_NAME))
@@ -68,6 +86,7 @@ def to_database(engine_name, folder_name, output_file_path):
     source_file_cur.commit()
     clone_set_cur.commit()
 
+    # クローン率のデータを作成
     source_files=DAO.get_all_columns(source_file_cur, SourceFileData.TABLE_NAME)
     clone_files=DAO.get_all_columns(clone_set_cur, CloneSetData.TABLE_NAME)
 
@@ -76,6 +95,7 @@ def to_database(engine_name, folder_name, output_file_path):
         data = ResultDB.create_result_data(source_file, clone_line_flags[source_file[SourceFileData.ID_INDEX]])
         ResultDB.insert(result_cur, data)
 
+    # コミット
     result_cur.commit()
 
     # ファイルを閉じる
@@ -83,5 +103,35 @@ def to_database(engine_name, folder_name, output_file_path):
     clone_set_cur.close()
     result_cur.close()
 
-to_database('GameMaker', 'arcane.git', PathManager.get_path('GameMaker', PathManager.CCFINDERSW_RESULT_FOLDER_NAME, 'arcane.git_output_ccfsw.txt'))
+''' 全プロジェクトのクローン率のデータベースを作成
+'''
+def create_clone_rate_db(engine_name):
+    clone_rate_folder_path = PathManager.get_path(engine_name, PathManager.DATA_BASE_FOLDER_NAME, PathManager.CLONE_RATE_DB_FOLDER_NAME)
+    FileManager.create_unique_folder(clone_rate_folder_path)
 
+    # データベースファイルを作成
+    clone_rate_cur = sqlite3.connect(PathManager.join_path(clone_rate_folder_path, CloneRateData.DB_NAME))
+
+    # テーブル作成
+    CloneRateDB.create_table(clone_rate_cur)
+
+    dataset_folder_path = PathManager.get_path(engine_name, PathManager.DATA_BASE_FOLDER_NAME)
+
+    id = 0
+    for root, _, files in os.walk(dataset_folder_path):
+        for file in files:
+            if not file == ResultData.RESULT_DB_NAME:
+                continue
+            result_cur = sqlite3.connect(PathManager.join_path(root, file))
+
+            data = CloneRateDB.create_clone_rate_data(result_cur, id, os.path.basename(root))
+            CloneRateDB.insert(clone_rate_cur, data)
+
+            id += 1
+            result_cur.close()
+    
+    # コミット
+    clone_rate_cur.commit()
+
+    # ファイルを閉じる
+    clone_rate_cur.close()

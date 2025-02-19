@@ -36,8 +36,7 @@ def create_clone_line_flags(source_file_cur):
     clone_flags = {}
 
     # 全のファイルの行数を取得
-    source_files = source_file_cur.execute(f'SELECT id, lines FROM {SourceFileData.TABLE_NAME}')
-    all_files = source_files.fetchall()
+    all_files = source_file_cur.execute(f'SELECT id, lines FROM {SourceFileData.TABLE_NAME}').fetchall()
 
     # 行数分のコードクローンになっているかのフラグを追加
     for row in all_files:
@@ -64,7 +63,7 @@ def create_result_data(source_file, clone_flags):
         ', '.join(map(str, sorted(clone_lines))),
         clone_line_count,
         line_count,
-        clone_line_count / line_count)
+        clone_line_count / (1 if line_count == 0 else line_count))
 
 ''' テーブル作成
 '''

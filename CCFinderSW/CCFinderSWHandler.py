@@ -4,6 +4,7 @@ sys.path.append(os.path.abspath('../'))
 
 import subprocess
 from Common import PathManager
+from Common import FileManager
 import shutil
 import CCFinderSWData
 
@@ -21,7 +22,7 @@ def analyze(engine_name, extension):
     # データセットのフォルダを取得
     for dataset in os.listdir(datasets_folder_path):
         # 2階層目以降のフォルダを対象外とする
-        if not os.path.isdir(os.path.join(datasets_folder_path, dataset)):
+        if not FileManager.is_directory(datasets_folder_path, dataset):
             continue
 
         # ソースファイルのパス
