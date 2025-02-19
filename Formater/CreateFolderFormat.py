@@ -2,8 +2,9 @@ import sys
 import os
 sys.path.append(os.path.abspath('../'))
 
-from Common import PathManager as PathManager
-from Common import FileManager as FileManager
+from Common import PathManager
+from Common import FileManager
+from Git import GitData
 
 # 解析に必要なフォルダを生成
 def create_folder(engineName):
@@ -20,5 +21,10 @@ def create_folder(engineName):
     # 箱ひげ図保管用
     FileManager.create_unique_Folder(PathManager.get_path(engineName, PathManager.BOX_PLOT_FOLDER_NAME))
 
+# 解析に必要なファイルを生成
+def create_file(engine_name):
+    FileManager.create_file(PathManager.get_path(engine_name, PathManager.DATA_SET_FOLDER_NAME, GitData.GIT_URL_FILE_NAME))
+
 create_folder(sys.argv[1])
+create_file(sys.argv[1])
 print("Created " + sys.argv[1] + " folder")

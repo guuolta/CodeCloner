@@ -1,15 +1,21 @@
 import os
 import sys
-sys.path.append(os.pardir)
+
+sys.path.append(os.path.abspath('../'))
 from Common import PathManager
 
 # GitURLが書かれたテキストファイル
 GIT_URL_FILE_NAME = 'datasets.txt'
 
-''' git cloneするフォルダのパスを取得
+''' git cloneするURLリストのファイルパスを取得
 '''
 def get_git_url_path(engine_name):
-    return PathManager.get_engine_path(engine_name, GIT_URL_FILE_NAME)
+    return PathManager.get_path(engine_name, PathManager.DATA_SET_FOLDER_NAME, GIT_URL_FILE_NAME)
+
+''' git cloneした結果を保存するフォルダパスを取得
+'''
+def get_output_folder_path(engine_name):
+    return PathManager.get_path(engine_name, PathManager.DATA_SET_FOLDER_NAME)
 
 ''' リポジトリ名(クローン後のフォルダ名)を取得
 '''

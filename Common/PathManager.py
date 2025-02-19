@@ -30,15 +30,17 @@ BOX_PLOT_FOLDER_NAME = 'BoxPlots'
 def get_engine_path(engine_name):
     return os.path.join(CCFINDERSW_PATH, engine_name)
 
-def get_path(engine_name, folder_name):
-    return os.path.join(CCFINDERSW_PATH, engine_name, folder_name)
+def get_path(engine_name, *folder_name):
+    return os.path.join(CCFINDERSW_PATH, engine_name, *folder_name)
 
 ''' パスを結合する
 '''
 def join_path(*args):
     return os.path.join(*args)
 
-''' CCfinderSWの解析結果ファイル名を取得する
+''' 相対パスを取得する
+    full_path: フルパス
+    prev_path: 基準パス
 '''
-def get_ccfindersw_result_file_name(repository_name):
-    return f"{repository_name}_ccfsw.txt"
+def get_relative_path(full_path, prev_path):
+    return os.path.relpath(full_path, prev_path)

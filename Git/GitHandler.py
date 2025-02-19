@@ -2,10 +2,9 @@ import os
 import sys
 import subprocess
 
-sys.path.append(os.pardir)
-from Common import PathManager
-from Common import PathData
-from Common import FileManager
+sys.path.append(os.path.abspath('../'))
+from Common import PathManager as PathManager
+from Common import FileManager as FileManager
 import GitData
 
 ''' git cloneする
@@ -23,7 +22,7 @@ def clone(engine_name):
     # URLリストのファイルを読み込む
     git_url_text_file = FileManager.read_file(git_url_path)
     # git cloneした結果を保存するフォルダパス
-    git_clone_directory_path = PathManager.get_engine_path(engine_name, PathData.GIT_CLONE_FOLDER_NAME)
+    git_clone_directory_path = GitData.get_output_folder_path(engine_name)
 
     # テキストファイルから1行ずつURLを読み込む
     for line in git_url_text_file:
@@ -37,7 +36,7 @@ def clone(engine_name):
         # リポジトリ名を取得
         repo_name = GitData.get_repository_name(url)
         # git cloneするパス
-        clone_path = os.path.join(git_clone_directory_path, repo_name)
+        clone_path = PathManager.join_path(git_clone_directory_path, repo_name)
 
         # リポジトリがすでに存在している場合はスキップ
         if os.path.exists(clone_path):
@@ -50,4 +49,3 @@ def clone(engine_name):
             subprocess.run(GitData.get_git_clone_command(url, clone_path), check=True)
         except subprocess.CalledProcessError as e:
             print(f"Failed to clone {url}: {e}")
-
