@@ -8,12 +8,12 @@ def read_file(file):
 
 """ 指定したフォルダのパスがあるか確認する
 """
-def Check_Folder_Path(folder_path):
+def check_folder_Path(folder_path):
     return os.path.exists(folder_path)
 
 """ 指定したフォルダのパスがあるか確認し、なければ作成する
 """
-def create_unique_Folder(folder_path):
+def create_unique_folder(folder_path):
     os.makedirs(folder_path, exist_ok=True)
 
 ''' 空ファイルを生成
@@ -21,3 +21,8 @@ def create_unique_Folder(folder_path):
 '''
 def create_file(path_name):
     with open(path_name,"w"):pass
+
+''' ファイルパスからファイル名を取得
+'''
+def get_file_name(file_path):
+    return os.path.splitext(os.path.basename(file_path))[0]

@@ -30,6 +30,8 @@ BOX_PLOT_FOLDER_NAME = 'BoxPlots'
 def get_engine_path(engine_name):
     return os.path.join(CCFINDERSW_PATH, engine_name)
 
+''' フルパスを取得する
+'''
 def get_path(engine_name, *folder_name):
     return os.path.join(CCFINDERSW_PATH, engine_name, *folder_name)
 

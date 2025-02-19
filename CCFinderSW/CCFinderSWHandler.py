@@ -4,7 +4,6 @@ sys.path.append(os.path.abspath('../'))
 
 import subprocess
 from Common import PathManager
-from Common import FileManager
 import shutil
 import CCFinderSWData
 

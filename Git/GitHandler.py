@@ -15,7 +15,7 @@ def clone(engine_name):
     git_url_path = GitData.get_git_url_path(engine_name)
 
     # フォルダが存在しない場合は終了
-    if(not FileManager.Check_Folder_Path(git_url_path)):
+    if(not FileManager.check_folder_Path(git_url_path)):
         print("Folder not found")
         return
 

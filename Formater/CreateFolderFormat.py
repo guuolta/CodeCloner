@@ -8,18 +8,18 @@ from Git import GitData
 
 # 解析に必要なフォルダを生成
 def create_folder(engineName):
-    FileManager.create_unique_Folder(PathManager.get_engine_path(engineName))
+    FileManager.create_unique_folder(PathManager.get_engine_path(engineName))
 
     # データセット保管用
-    FileManager.create_unique_Folder(PathManager.get_path(engineName, PathManager.DATA_SET_FOLDER_NAME))
+    FileManager.create_unique_folder(PathManager.get_path(engineName, PathManager.DATA_SET_FOLDER_NAME))
     # プログラムファイル保管用
-    FileManager.create_unique_Folder(PathManager.get_path(engineName, PathManager.PROGRAM_FOLDER_NAME))
+    FileManager.create_unique_folder(PathManager.get_path(engineName, PathManager.PROGRAM_FOLDER_NAME))
     # CCFinderSW解析結果保管用
-    FileManager.create_unique_Folder(PathManager.get_path(engineName, PathManager.CCFINDERSW_RESULT_FOLDER_NAME))
+    FileManager.create_unique_folder(PathManager.get_path(engineName, PathManager.CCFINDERSW_RESULT_FOLDER_NAME))
     # データベース保管用
-    FileManager.create_unique_Folder(PathManager.get_path(engineName, PathManager.DATA_BASE_FOLDER_NAME))
+    FileManager.create_unique_folder(PathManager.get_path(engineName, PathManager.DATA_BASE_FOLDER_NAME))
     # 箱ひげ図保管用
-    FileManager.create_unique_Folder(PathManager.get_path(engineName, PathManager.BOX_PLOT_FOLDER_NAME))
+    FileManager.create_unique_folder(PathManager.get_path(engineName, PathManager.BOX_PLOT_FOLDER_NAME))
 
 # 解析に必要なファイルを生成
 def create_file(engine_name):

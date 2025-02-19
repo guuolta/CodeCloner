@@ -30,7 +30,7 @@ def extract(engine_name, dot_extension):
             dst_file_path = PathManager.get_path(engine_name, program_path, relative_path, file_path)
 
             # フォルダがない場合は作成
-            FileManager.create_unique_Folder(dst_file_path)
+            FileManager.create_unique_folder(dst_file_path)
 
             # プログラムファイルをコピー
             print(f"Copying {src_file_path} to {dst_file_path}")

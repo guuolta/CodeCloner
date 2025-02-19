@@ -11,6 +11,10 @@ SOURCE_FILES_HEADER = "#source_files"
 # クローンセット一覧のヘッダー
 CLONE_SETS_HEADER = "#clone_sets"
 
+# クローンセットのヘッダー
+CLONE_SET_HEADER = "cloneID:"
+
+
 # CCFinderSWの実行先パス
 CCFINDERSW_JAVA_PATH = os.path.expanduser("~/Documents/CCFinderSW-1.0/lib/CCFinderSW-1.0.jar")
 
