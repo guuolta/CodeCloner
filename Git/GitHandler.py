@@ -35,7 +35,7 @@ def clone(engine_name):
 
         # リポジトリ名を取得
         repo_name = GitData.get_repository_name(url)
-        # git cloneするパス
+        # git clone結果を保存するフォルダパス
         clone_path = PathManager.join_path(git_clone_directory_path, repo_name)
 
         # リポジトリがすでに存在している場合はスキップ

@@ -11,9 +11,10 @@ import CCFinderSWData
 '''
 CCFinderSWでデータセットのクローンを解析する
 engine_name: エンジンの名前
-extension: 解析対象の拡張子(.は不要)
+language: 解析するプログラミング言語(grammarsv4内のプログラミング言語のフォルダ名)
+    例：C++: cpp, C#: csharp
 '''
-def analyze(engine_name, extension):
+def analyze(engine_name, language):
     # データセットのフォルダパス
     datasets_folder_path = CCFinderSWData.get_program_folder_path(engine_name)
     # 解析結果のフォルダパス
@@ -28,20 +29,21 @@ def analyze(engine_name, extension):
         # ソースファイルのパス
         program_file_path = PathManager.join_path(datasets_folder_path, dataset)
         # 出力ファイル名
-        output_name = CCFinderSWData.get_result_file_name(dataset)
+        output_file_name = CCFinderSWData.get_result_file_name(dataset)
+
         # CCFinderSWを実行
-        subprocess.run(CCFinderSWData.get_execute_command(program_file_path, extension, output_name))
+        subprocess.run(CCFinderSWData.get_execute_command(program_file_path, language, output_file_name))
 
         # 出力ファイル名(拡張子付き)
-        output_file_name = CCFinderSWData.get_result_file_name_with_extension(dataset)
-        # 移動元(初期は、このPythonファイルと同じフォルダに入る)
-        result_file_path = PathManager.join_path(os.path.dirname(os.path.abspath(__file__)), output_file_name)
-        # 移動先
-        output_file_path = PathManager.join_path(output_folder_path, output_file_name)
+        output_file_name_with_extension = CCFinderSWData.get_result_file_name_with_extension(dataset)
+        # 移動元(このPythonファイルと同じフォルダ内)
+        source_file_path = PathManager.join_path(os.path.dirname(os.path.abspath(__file__)), output_file_name_with_extension)
+        # 移動先(データセットフォルダ内)
+        destination_file_path = PathManager.join_path(output_folder_path, output_file_name_with_extension)
 
         # ファイルを移動
         try:
-            shutil.move(result_file_path, output_file_path)
+            shutil.move(source_file_path, destination_file_path)
         except Exception as e:
             print(f"Error: {e}")
             continue

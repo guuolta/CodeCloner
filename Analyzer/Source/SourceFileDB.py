@@ -1,7 +1,7 @@
 import os
 import sys
 
-from Source import SourceFileData as SourceFileData
+from . import SourceFileData as SourceFileData
 
 sys.path.append(os.path.abspath('../'))
 from Common import FileManager as FileManager

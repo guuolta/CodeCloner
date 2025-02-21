@@ -26,14 +26,21 @@ LINES_INDEX = 2
 TOKENS_INDEX = 3
 PATH_INDEX = 4
 
+# カラム名
+COLUMN_NAME = 'name'
+COLUMN_LINES = 'lines'
+COLUMN_TOKENS = 'tokens'
+COLUMN_PATH = 'path'
+
 # スキーマ定義
-TABLE_SCHEMA = '''id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                name TEXT, 
-                lines INTEGER, 
-                tokens INTEGER, 
-                path TEXT'''
+TABLE_SCHEMA = f'''id INTEGER PRIMARY KEY AUTOINCREMENT,
+                {COLUMN_NAME} TEXT,
+                {COLUMN_LINES} INTEGER,
+                {COLUMN_TOKENS} INTEGER,
+                {COLUMN_PATH} TEXT'''
+
 INSERT_SCHEMA = DAO.get_insert_schema(TABLE_NAME,
-    ['name', 'lines', 'tokens', 'path'])
+    [COLUMN_NAME, COLUMN_LINES, COLUMN_TOKENS, COLUMN_PATH])
 
 # ソースファイルの要素
 @dataclass

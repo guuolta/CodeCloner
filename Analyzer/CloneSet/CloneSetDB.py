@@ -2,8 +2,7 @@ import os
 import re
 import sys
 
-from CloneSet import CloneSetData as CloneSetData
-import CommonAnalyze as CommonAnalyze
+import Analyzer.CloneSet.CloneSetData as CloneSetData
 
 sys.path.append(os.path.abspath('../'))
 from Common import FileManager as FileManager

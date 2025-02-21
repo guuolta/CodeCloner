@@ -1,6 +1,7 @@
 import os
 import sys
 from dataclasses import dataclass
+import Analyzer.Result as Result
 
 sys.path.append(os.path.abspath('../'))
 from DataBase import DAO as DAO
@@ -11,21 +12,35 @@ DB_NAME = 'CloneRate.db'
 # データベースのテーブルの名前
 TABLE_NAME = 'CloneRate'
 
+# カラム名
+COLUMN_PROJECT_NAME = 'project_name'
+COLUMN_FILE_COUNT = 'file_count'
+COLUMN_FILE_CLONE_COUNT = 'file_clone_count'
+COLUMN_FILE_CLONE_RATE = 'file_clone_rate'
+COLUMN_LINE_COUNT = 'line_count'
+COLUMN_LINE_CLONE_COUNT = 'line_clone_count'
+COLUMN_LINE_CLONE_RATE = 'line_clone_rate'
+
 # スキーマ定義
-TABLE_SCHEMA = '''id INTEGER PRIMARY KEY AUTOINCREMENT,
-                project_name TEXT,
-                file_count INTEGER,
-                file_clone_count INTEGER,
-                file_clone_rate REAL,
-                line_count INTEGER,
-                line_clone_count INTEGER,
-                line_clone_rate REAL'''
+TABLE_SCHEMA = f'''id INTEGER PRIMARY KEY AUTOINCREMENT,
+                {COLUMN_PROJECT_NAME} TEXT,
+                {COLUMN_FILE_COUNT} INTEGER,
+                {COLUMN_FILE_CLONE_COUNT} INTEGER,
+                {COLUMN_FILE_CLONE_RATE} REAL,
+                {COLUMN_LINE_COUNT} INTEGER,
+                {COLUMN_LINE_CLONE_COUNT} INTEGER,
+                {COLUMN_LINE_CLONE_RATE} REAL'''
 
 INSERT_SCHEME = DAO.get_insert_schema(TABLE_NAME,
-    ['project_name',
-        'file_count', 'file_clone_count', 'file_clone_rate',
-        'line_count', 'line_clone_count', 'line_clone_rate'])
+    [COLUMN_PROJECT_NAME,
+        COLUMN_FILE_COUNT, COLUMN_FILE_CLONE_COUNT, COLUMN_FILE_CLONE_RATE,
+        COLUMN_LINE_COUNT, COLUMN_LINE_CLONE_COUNT, COLUMN_LINE_CLONE_RATE])
 
+SELECT_SCHEME = f'''SELECT COUNT(*),
+        SUM({Result.ResultData.COLUMN_LINE_COUNT}),
+        SUM({Result.ResultData.COLUMN_CLONE_LINE_COUNT}),
+        COUNT(CASE WHEN clone_rate > 0 THEN 1 END)
+        FROM {Result.ResultData.TABLE_NAME}'''
 
 # クローン率のデータベースのフォルダ名
 @dataclass

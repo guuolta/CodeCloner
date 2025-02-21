@@ -29,16 +29,27 @@ START_TOKEN_INDEX = 4
 END_LINE_INDEX = 5
 END_TOKEN_INDEX = 6
 
+# カラム名
+COLUMN_CLONE_ID = 'clone_id'
+COLUMN_FILE_ID = 'file_id'
+COLUMN_START_LINE = 'start_line'
+COLUMN_START_TOKEN = 'start_token'
+COLUMN_END_LINE = 'end_line'
+COLUMN_END_TOKEN = 'end_token'
+
 # スキーマ定義
-TABLE_SCHEMA = '''id INTEGER PRIMARY KEY AUTOINCREMENT,
-                clone_id INTEGER,
-                file_id INTEGER,
-                start_line INTEGER,
-                start_token INTEGER,
-                end_line INTEGER,
-                end_token INTEGER'''
+TABLE_SCHEMA = f'''id INTEGER PRIMARY KEY AUTOINCREMENT,
+                {COLUMN_CLONE_ID} INTEGER,
+                {COLUMN_FILE_ID} INTEGER,
+                {COLUMN_START_LINE} INTEGER,
+                {COLUMN_START_TOKEN} INTEGER,
+                {COLUMN_END_LINE} INTEGER,
+                {COLUMN_END_TOKEN} INTEGER'''
+
 INSERT_SCHEMA = DAO.get_insert_schema(TABLE_NAME,
-    ['clone_id', 'file_id', 'start_line', 'start_token', 'end_line', 'end_token'])
+    [COLUMN_CLONE_ID, COLUMN_FILE_ID,
+        COLUMN_START_LINE, COLUMN_START_TOKEN,
+        COLUMN_END_LINE, COLUMN_END_TOKEN])
 
 # クローンセットの要素
 @dataclass

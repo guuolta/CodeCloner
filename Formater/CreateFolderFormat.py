@@ -8,7 +8,7 @@ from Git import GitData
 
 # 解析に必要なフォルダを生成
 def create_folder(engineName):
-    FileManager.create_unique_folder(PathManager.get_engine_path(engineName))
+    FileManager.create_unique_folder(PathManager.get_path(engineName))
 
     # データセット保管用
     FileManager.create_unique_folder(PathManager.get_path(engineName, PathManager.DATA_SET_FOLDER_NAME))

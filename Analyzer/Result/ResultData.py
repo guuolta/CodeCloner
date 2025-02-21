@@ -11,17 +11,24 @@ RESULT_DB_NAME = 'Result.db'
 # データベースのテーブルの名前
 TABLE_NAME = 'Result'
 
+# カラム名
+COLUMN_FILE_NAME = 'file_name'
+COLUMN_CLONE_LINES = 'clone_lines'
+COLUMN_CLONE_LINE_COUNT = 'clone_line_count'
+COLUMN_LINE_COUNT = 'line_count'
+COLUMN_CLONE_RATE = 'clone_rate'
+
 # スキーマ定義
-TABLE_SCHEMA = '''id INTEGER PRIMARY KEY AUTOINCREMENT,
-                file_name TEXT,
-                clone_lines TEXT,
-                clone_line_count INTEGER,
-                line_count INTEGER,
-                clone_rate REAL'''
+TABLE_SCHEMA = f'''id INTEGER PRIMARY KEY AUTOINCREMENT,
+                {COLUMN_FILE_NAME} TEXT,
+                {COLUMN_CLONE_LINES} TEXT,
+                {COLUMN_CLONE_LINE_COUNT} INTEGER,
+                {COLUMN_LINE_COUNT} INTEGER,
+                {COLUMN_CLONE_RATE} REAL'''
 INSERT_SCHEMA = DAO.get_insert_schema(TABLE_NAME,
-    ['file_name',
-        'clone_lines', 'clone_line_count',
-        'line_count', 'clone_rate'])
+    [COLUMN_FILE_NAME,
+        COLUMN_CLONE_LINES, COLUMN_CLONE_LINE_COUNT,
+        COLUMN_LINE_COUNT, COLUMN_CLONE_RATE])
 
 # クローンのデータベースのフォルダ名
 @dataclass

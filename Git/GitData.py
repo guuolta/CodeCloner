@@ -7,12 +7,12 @@ from Common import PathManager
 # GitURLが書かれたテキストファイル
 GIT_URL_FILE_NAME = 'datasets.txt'
 
-''' git cloneするURLリストのファイルパスを取得
+''' クローンするURLリストのファイルパスを取得
 '''
 def get_git_url_path(engine_name):
     return PathManager.get_path(engine_name, PathManager.DATA_SET_FOLDER_NAME, GIT_URL_FILE_NAME)
 
-''' git cloneした結果を保存するフォルダパスを取得
+''' クローンした結果を保存するフォルダパスを取得
 '''
 def get_output_folder_path(engine_name):
     return PathManager.get_path(engine_name, PathManager.DATA_SET_FOLDER_NAME)
