@@ -171,4 +171,4 @@ cython_debug/
 .pypirc
 
 # myenv
-Analyzer/myenv/
+myenv/
