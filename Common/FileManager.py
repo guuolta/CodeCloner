@@ -1,10 +1,35 @@
+import chardet
 import os
 
 def read_file(file):
     ''' ファイルを読み込む'''
 
-    with open(file, 'r', encoding='utf-8') as f:
-        return f.readlines()
+    try:
+        # ファイルのエンコーディングを判別
+        with open(file, 'rb') as f:
+            raw_data = f.read()
+            result = chardet.detect(raw_data)
+            encoding = result['encoding']
+
+        # UTF-8をデフォルトにする
+        if encoding is None:
+            encoding = 'utf-8'
+
+        # 判別したエンコーディングでファイルを読み込む
+        with open(file, 'r', encoding=encoding) as f:
+            return f.readlines()  # 行をリストとして返す
+    except Exception as e:
+        print(f"Error reading file {file}: {e}")
+        return []
+
+def write_file(file, contents):
+    ''' ファイルに書き込む'''
+
+    try:
+        with open(file, 'w', encoding='utf-8') as f:
+            f.writelines(line for line in contents)
+    except Exception as e:
+        print(f"Error writing file {file}: {e}")
 
 def is_exist_path(path):
     """ 指定したパスがあるか確認する"""

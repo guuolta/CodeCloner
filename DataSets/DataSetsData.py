@@ -9,6 +9,9 @@ from Git import GitData as GitData
 # プログラムファイルの保存先フォルダ名
 PROGRAM_FOLDER_NAME = 'Programs'
 
+# usingを削除するファイルの拡張子(dotを含む)
+REMOVE_USING_EXTENSIONS = ['.cs']
+
 def get_data_sets_path(engine_name):
     ''' データセットのフォルダパスを取得 '''
 
@@ -31,4 +34,4 @@ def get_program_file_path(engine_name, relative_path, file_path):
 def get_dot_extensions(*extensions):
     ''' 探索するファイルの拡張子を取得 '''
 
-    return tuple(f".{ext}" for ext in extensions) 
+    return tuple(f".{ext}" for ext in extensions)
