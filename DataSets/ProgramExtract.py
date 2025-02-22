@@ -1,37 +1,55 @@
 import os
 import sys
-sys.path.append(os.pardir)
 import shutil
-from Common import PathManager
-from Common import FileManager
 
-''' クローンしたプロジェクトのプログラムファイルを抽出する
-抽出後のファイルはフォルダ階層を維持してコピーされる
-engine_name: 調査対象のゲームエンジン名
-dot_extension: 抽出対象のプログラミング言語の拡張子(.が必要)
-'''
-def extract(engine_name, dot_extension):
+import DataSets.DataSetsData as DataSetsData
+
+sys.path.append(os.path.abspath('../'))
+from Common import PathManager as PathManager
+from Common import FileManager as FileManager
+
+def extract(engine_name, extensions):
+    ''' クローンしたプロジェクトのプログラムファイルを抽出する
+    抽出後のファイルはフォルダ階層を維持してコピーされる
+
+    extensions: 抽出対象のプログラミング言語の拡張子のリスト(.は不要)
+    '''
+
     # データセットのパス
-    dataset_path = PathManager.get_path(engine_name, PathManager.DATA_SET_FOLDER_NAME)
-    # プログラムファイルの保存先フォルダパス
-    program_path = PathManager.get_path(engine_name, PathManager.PROGRAM_FOLDER_NAME)
+    dataset_path = DataSetsData.get_data_sets_path(engine_name)
+
+    # 拡張子のドットを追加
+    dot_extensions = DataSetsData.get_dot_extensions(extensions[0])
+    print(dot_extensions)
+
+    # プログラムファイルの保存先フォルダを作成
+    FileManager.create_unique_folder(DataSetsData.get_program_folder_path(engine_name))
 
     # データセットのフォルダを再帰的に探索
     for root, dirs, files in os.walk(dataset_path):
         for file_path in files:
-            # プログラムファイルがない場合はスキップ
-            if not file_path.endswith(dot_extension):
+            # プログラムファイルでない場合はスキップ
+            if not file_path.endswith(dot_extensions):
                 continue
+
+            # フォルダの階層を維持するための相対パス
             relative_path = PathManager.get_relative_path(root, dataset_path)
 
             # コピー元
             src_file_path = PathManager.join_path(root, file_path)
             # コピー先
-            dst_file_path = PathManager.get_path(engine_name, program_path, relative_path, file_path)
+            dst_file_path = DataSetsData.get_program_file_path(engine_name, relative_path, file_path)
+
+            # すでにコピー済みの場合はスキップ
+            if FileManager.is_exist_path(dst_file_path):
+                print(f"{file_path} is already copied")
+                continue
 
             # フォルダがない場合は作成
             FileManager.create_unique_folder(dst_file_path)
 
-            # プログラムファイルをコピー
-            print(f"Copying {src_file_path} to {dst_file_path}")
-            shutil.copy2(src_file_path, dst_file_path)
+            # ファイルをコピー
+            try:
+                shutil.copy2(src_file_path, dst_file_path)
+            except Exception as e:
+                print(f"Error: {e}")

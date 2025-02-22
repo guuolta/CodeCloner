@@ -30,10 +30,12 @@ def read_urls(file_path):
 
 def get_existing_projects(folder_path):
     """データセットフォルダ内のプロジェクト名を取得する。"""
+
     return [d for d in os.listdir(folder_path) if os.path.isdir(os.path.join(folder_path, d))]
 
 def find_not_cloned_projects(urls, existing_projects):
     """クローンできていないプロジェクトを特定する。"""
+
     not_cloned = []
     for url in urls:
         # URLからプロジェクト名を抽出するロジックを実装
@@ -43,13 +45,9 @@ def find_not_cloned_projects(urls, existing_projects):
     return not_cloned
 
 def extract_project_name_from_url(url):
-    """URLからプロジェクト名を抽出する（仮の実装）。"""
-    # ここでは単純な例を示します。実際には URL の形式に応じて実装を調整する必要があります。
-    # 例: 'https://github.com/user/repo.git' から 'repo' を抽出する
+    """URLからプロジェクト名を抽出する"""
+
     parts = url.split('/')
     if len(parts) > 2:
         return parts[-1].replace('.git', '')  # .git を取り除く
     return None
-
-if __name__ == "__main__":
-    main()

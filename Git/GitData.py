@@ -1,28 +1,33 @@
+''' Gitに関するデータ'''
+
 import os
 import sys
 
 sys.path.append(os.path.abspath('../'))
 from Common import PathManager
 
+# クローン結果を保存するフォルダ名
+REPOSITORY_FOLDER_NAME = 'Repositories'
+
 # GitURLが書かれたテキストファイル
 GIT_URL_FILE_NAME = 'datasets.txt'
 
-''' クローンするURLリストのファイルパスを取得
-'''
 def get_git_url_path(engine_name):
-    return PathManager.get_path(engine_name, PathManager.DATA_SET_FOLDER_NAME, GIT_URL_FILE_NAME)
+    ''' クローンするURLリストのファイルパスを取得 '''
 
-''' クローンした結果を保存するフォルダパスを取得
-'''
+    return PathManager.get_path(engine_name, GIT_URL_FILE_NAME)
+
 def get_output_folder_path(engine_name):
-    return PathManager.get_path(engine_name, PathManager.DATA_SET_FOLDER_NAME)
+    ''' クローンした結果を保存するフォルダパスを取得'''
 
-''' リポジトリ名(クローン後のフォルダ名)を取得
-'''
+    return PathManager.get_path(engine_name, REPOSITORY_FOLDER_NAME)
+
 def get_repository_name(url):
+    ''' リポジトリ名(クローン後のフォルダ名)を取得'''
+
     return url.split("/")[-1].replace(".git", "")
 
-''' git cloneコマンドを取得
-'''
 def get_git_clone_command(url, path):
+    ''' git cloneコマンドを取得'''
+
     return ["git", "clone", "--depth", "1", url, path]

@@ -3,6 +3,7 @@ import os
 
 sys.path.append(os.path.abspath('../'))
 from Common import PathManager as PathManager
+from DataSets import DataSetsData as DataSetsData
 
 ''' CCFinderの解析結果のヘッダー
 '''
@@ -14,6 +15,11 @@ CLONE_SETS_HEADER = "#clone_sets"
 # クローンセットのヘッダー
 CLONE_SET_HEADER = "cloneID:"
 
+''' パス
+'''
+# CCFinderSWの解析結果フォルダ名
+CCFINDERSW_RESULT_FOLDER_NAME = "Outputs"
+
 # CCFinderSWの実行先パス
 CCFINDERSW_JAVA_PATH = os.path.expanduser("~/Documents/CCFinderSW-1.0/lib/CCFinderSW-1.0.jar")
 
@@ -23,12 +29,12 @@ OUTPUT_EXTENSION = ".txt"
 def get_program_folder_path(engine_name):
     ''' ソースファイルを保管するフォルダパス取得 '''
 
-    return PathManager.get_path(engine_name, PathManager.PROGRAM_FOLDER_NAME)
+    return DataSetsData.get_program_folder_path(engine_name)
 
 def get_output_folder_path(engine_name):
     ''' 解析結果を補完するフォルダパス取得 '''
 
-    return PathManager.get_path(engine_name, PathManager.CCFINDERSW_RESULT_FOLDER_NAME)
+    return PathManager.get_path(engine_name, CCFINDERSW_RESULT_FOLDER_NAME)
 
 def get_result_file_name(repository_name):
     ''' CCfinderSWの解析結果ファイル名を取得する'''
@@ -48,7 +54,7 @@ def get_repository_name(result_file_name):
 
     return result_file_name.replace(f"_output_ccfsw{OUTPUT_EXTENSION}", "")
 
-def get_execute_command(dataset_folder_path, language, output_file_name):
+def get_execute_command(dataset_folder_path, extensions, language, output_file_name):
     ''' CCFinderSWのコマンド取得
     
     dataset_folder_path: データセットのフォルダパス
@@ -61,7 +67,8 @@ def get_execute_command(dataset_folder_path, language, output_file_name):
     return [
         "java", "-jar", CCFINDERSW_JAVA_PATH,
         "D", "-d", dataset_folder_path,
-        "-antlr", "gml", "-l", language,
+        "-antlr", *extensions,
+        "-l", language,
         "-w", "2",
         "-o", output_file_name,
         "-ccfsw", "set"

@@ -1,21 +1,23 @@
+''' Gitの操作を行うモジュール'''
+
 import os
 import sys
 import subprocess
 
+import Git.GitData as GitData
+
 sys.path.append(os.path.abspath('../'))
 from Common import PathManager as PathManager
 from Common import FileManager as FileManager
-import GitData
 
-''' git cloneする
-engine_name: 調査対象のゲームエンジン名
-'''
 def clone(engine_name):
+    ''' git cloneする'''
+
     # URLリストのファイルパスを取得
     git_url_path = GitData.get_git_url_path(engine_name)
 
     # フォルダが存在しない場合は終了
-    if(not FileManager.check_folder_Path(git_url_path)):
+    if(not FileManager.is_exist_path(git_url_path)):
         print("Folder not found")
         return
 

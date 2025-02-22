@@ -4,6 +4,9 @@ import sys
 sys.path.append(os.path.abspath('../'))
 from Common import PathManager as PathManager
 
+# 保存先のフォルダ名
+BOX_PLOT_FOLDER_NAME = 'BoxPlots'
+
 # 画像サイズ
 FIGURE_WIDTH = 10
 FIGURE_HEIGHT = 6
@@ -27,4 +30,4 @@ TOTAL_FILE_CLONE_RATE_LABEL = 'Total File Clone Rate'
 def get_save_path(engine_name):
     '''箱ひげ図の保存先のパス'''
 
-    return PathManager.get_path(engine_name, PathManager.BOX_PLOT_FOLDER_NAME)
+    return PathManager.get_path(engine_name, BOX_PLOT_FOLDER_NAME)

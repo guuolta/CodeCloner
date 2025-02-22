@@ -13,16 +13,23 @@ from Common import FileManager as FileManager
 from Common import PathManager as PathManager
 from CCFinderSW import CCFinderSWData as CCFinderSWData
 from DataBase import DAO as DAO
+from DataBase import DBData as DBData
 
 def create_db(engine_name):
     ''' 全プロジェクトのCCFinderSWの解析結果ファイルをデータベースに登録 '''
 
-    output_folder_path = _get_output_folder_path(engine_name)
+    # 解析結果のフォルダパス
+    output_folder_path = DBData.get_output_folder_path(engine_name)
+
+    # データベースフォルダを作成
+    FileManager.create_unique_folder(DBData.get_db_folder_path(engine_name))
 
     for root, _, files in os.walk(output_folder_path):
         for file in files:
+            # 出力ファイル以外はスキップ
             if not file.endswith(CCFinderSWData.OUTPUT_EXTENSION):
                 continue
+
             _create_db(engine_name, CCFinderSWData.get_repository_name(file), PathManager.join_path(root, file))
 
     _create_clone_rate_db(engine_name)
@@ -30,7 +37,7 @@ def create_db(engine_name):
 def get_project_names(engine_name):
     ''' プロジェクトの名前を取得'''
 
-    clone_rate_cur = sqlite3.connect(_get_db_path(engine_name, PathManager.CLONE_RATE_DB_FOLDER_NAME, CloneRate.CloneRateData.DB_NAME))
+    clone_rate_cur = sqlite3.connect(DBData.get_db_path(engine_name, DBData.CLONE_RATE_DB_FOLDER_NAME, CloneRate.CloneRateData.DB_NAME))
     return DAO.get_column(clone_rate_cur, CloneRate.CloneRateData.TABLE_NAME, CloneRate.CloneRateData.COLUMN_PROJECT_NAME)
 
 def get_project_clone_rates(engine_name):
@@ -39,7 +46,7 @@ def get_project_clone_rates(engine_name):
     project_clone_rates = []
 
     # データベースのフォルダパス
-    data_base_folder_path = PathManager.get_path(engine_name, PathManager.DATA_BASE_FOLDER_NAME)
+    data_base_folder_path = PathManager.get_path(engine_name, DBData.DATA_BASE_FOLDER_NAME)
 
     for root, _, files in os.walk(data_base_folder_path):
         for file in files:
@@ -55,19 +62,19 @@ def get_project_clone_rates(engine_name):
 def get_file_clone_rates(engine_name):
     ''' 全プロジェクトのファイルクローン率を取得 '''
 
-    clone_rate_cur = sqlite3.connect(_get_db_path(engine_name, PathManager.CLONE_RATE_DB_FOLDER_NAME, CloneRate.CloneRateData.DB_NAME))
+    clone_rate_cur = sqlite3.connect(DBData.get_db_path(engine_name, DBData.CLONE_RATE_DB_FOLDER_NAME, CloneRate.CloneRateData.DB_NAME))
     return DAO.get_column(clone_rate_cur, CloneRate.CloneRateData.TABLE_NAME, CloneRate.CloneRateData.COLUMN_FILE_CLONE_RATE)
 
 def get_line_clone_rates(engine_name):
     ''' 全プロジェクトの行クローン率を取得 '''
 
-    clone_rate_cur = sqlite3.connect(_get_db_path(engine_name, PathManager.CLONE_RATE_DB_FOLDER_NAME, CloneRate.CloneRateData.DB_NAME))
+    clone_rate_cur = sqlite3.connect(DBData.get_db_path(engine_name, DBData.CLONE_RATE_DB_FOLDER_NAME, CloneRate.CloneRateData.DB_NAME))
     return DAO.get_column(clone_rate_cur, CloneRate.CloneRateData.TABLE_NAME, CloneRate.CloneRateData.COLUMN_LINE_CLONE_RATE)
 
 def calculate_line_clone_rate(engine_name):
     ''' プロジェクトの行のクローン率を計算 '''
 
-    clone_rate_cur = sqlite3.connect(_get_db_path(engine_name, PathManager.CLONE_RATE_DB_FOLDER_NAME, CloneRate.CloneRateData.DB_NAME))
+    clone_rate_cur = sqlite3.connect(DBData.get_db_path(engine_name, DBData.CLONE_RATE_DB_FOLDER_NAME, CloneRate.CloneRateData.DB_NAME))
     # 全行数と全クローン行数を取得
     line_data = DAO.get_column_sum(clone_rate_cur,
         CloneRate.CloneRateData.TABLE_NAME,
@@ -82,7 +89,7 @@ def calculate_line_clone_rate(engine_name):
 def calculate_file_clone_rate(engine_name):
     ''' プロジェクトのファイルのクローン率を計算 '''
 
-    clone_rate_cur = sqlite3.connect(_get_db_path(engine_name, PathManager.CLONE_RATE_DB_FOLDER_NAME, CloneRate.CloneRateData.DB_NAME))
+    clone_rate_cur = sqlite3.connect(DBData.get_db_path(engine_name, DBData.CLONE_RATE_DB_FOLDER_NAME, CloneRate.CloneRateData.DB_NAME))
     # 全ファイル数と全クローンファイル数を取得
     file_data = DAO.get_column_sum(clone_rate_cur,
         CloneRate.CloneRateData.TABLE_NAME,
@@ -98,12 +105,12 @@ def _create_db(engine_name, folder_name, output_file_path):
     ''' 対象プロジェクトのCCFinderSWの解析結果ファイルをデータベースに登録 '''
 
     # 対象プロジェクトのデータベースを保管するフォルダを作成
-    FileManager.create_unique_folder(PathManager.get_path(engine_name, PathManager.DATA_BASE_FOLDER_NAME, folder_name))
+    FileManager.create_unique_folder(PathManager.get_path(engine_name, DBData.DATA_BASE_FOLDER_NAME, folder_name))
 
     # データベースファイルを作成
-    source_file_cur = sqlite3.connect(_get_db_path(engine_name, folder_name, Source.SourceFileData.SOURCE_FILE_DB_NAME))
-    clone_set_cur = sqlite3.connect(_get_db_path(engine_name, folder_name, CloneSet.CloneSetData.CLONE_SETS_DB_NAME))
-    result_cur = sqlite3.connect(_get_db_path(engine_name, folder_name, Result.ResultData.RESULT_DB_NAME))
+    source_file_cur = sqlite3.connect(DBData.get_db_path(engine_name, folder_name, Source.SourceFileData.SOURCE_FILE_DB_NAME))
+    clone_set_cur = sqlite3.connect(DBData.get_db_path(engine_name, folder_name, CloneSet.CloneSetData.CLONE_SETS_DB_NAME))
+    result_cur = sqlite3.connect(DBData.get_db_path(engine_name, folder_name, Result.ResultData.RESULT_DB_NAME))
 
     # テーブル作成
     Source.SourceFileDB.create_table(source_file_cur)
@@ -169,7 +176,7 @@ def _create_clone_rate_db(engine_name):
     ''' 全プロジェクトのクローン率のデータベースを作成 '''
 
     # クローン率のデータベースを保管するフォルダを作成
-    clone_rate_folder_path = PathManager.get_path(engine_name, PathManager.DATA_BASE_FOLDER_NAME, PathManager.CLONE_RATE_DB_FOLDER_NAME)
+    clone_rate_folder_path = PathManager.get_path(engine_name, DBData.DATA_BASE_FOLDER_NAME, DBData.CLONE_RATE_DB_FOLDER_NAME)
     FileManager.create_unique_folder(clone_rate_folder_path)
 
     # データベースファイルを作成
@@ -179,7 +186,7 @@ def _create_clone_rate_db(engine_name):
     CloneRate.CloneRateDB.create_table(clone_rate_cur)
 
     # データベースのフォルダパス
-    data_base_folder_path = PathManager.get_path(engine_name, PathManager.DATA_BASE_FOLDER_NAME)
+    data_base_folder_path = PathManager.get_path(engine_name, DBData.DATA_BASE_FOLDER_NAME)
 
     # プロジェクトID
     id = 0
@@ -201,13 +208,3 @@ def _create_clone_rate_db(engine_name):
 
     # ファイルを閉じる
     clone_rate_cur.close()
-
-def _get_output_folder_path(engine_name):
-    ''' CCfinderSWの解析結果ファイルを保管するフォルダのパスを取得 '''
-
-    return PathManager.get_path(engine_name, PathManager.CCFINDERSW_RESULT_FOLDER_NAME)
-
-def _get_db_path(engine_name, folder_name, db_name):
-    ''' データベースファイルのパスを取得 '''
-
-    return PathManager.get_path(engine_name, PathManager.DATA_BASE_FOLDER_NAME, folder_name, db_name)
