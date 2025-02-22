@@ -18,7 +18,7 @@ def clone(engine_name):
 
     # フォルダが存在しない場合は終了
     if(not FileManager.is_exist_path(git_url_path)):
-        print("Folder not found")
+        print("DataSets File not Found")
         return
 
     # URLリストのファイルを読み込む

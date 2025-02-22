@@ -30,4 +30,8 @@ def get_repository_name(url):
 def get_git_clone_command(url, path):
     ''' git cloneコマンドを取得'''
 
+    # `.git` がなければ追加
+    if not url.endswith(".git"):
+        url += ".git"
+
     return ["git", "clone", "--depth", "1", url, path]
