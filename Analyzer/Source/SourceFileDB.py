@@ -36,4 +36,4 @@ def create_source_file_data(source_file_line):
 '''
 def inset(cur, file):
     cur.execute(SourceFileData.INSERT_SCHEMA,
-                (file.id, file.name, file.lines, file.tokens, file.path))
+                (file.id, file.name, file.line_count, file.token_count, file.path))

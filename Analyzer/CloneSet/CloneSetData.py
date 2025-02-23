@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 sys.path.append(os.path.abspath('../'))
 from DataBase import DAO as DAO
+from DataBase import DBData as DBData
 
 # ソースファイルデータベースの名前
 CLONE_SETS_DB_NAME = 'CloneSet.db'
@@ -38,7 +39,7 @@ COLUMN_END_LINE = 'end_line'
 COLUMN_END_TOKEN = 'end_token'
 
 # スキーマ定義
-TABLE_SCHEMA = f'''id INTEGER PRIMARY KEY AUTOINCREMENT,
+TABLE_SCHEMA = f'''{DBData.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
                 {COLUMN_CLONE_ID} INTEGER,
                 {COLUMN_FILE_ID} INTEGER,
                 {COLUMN_START_LINE} INTEGER,

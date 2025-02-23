@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 sys.path.append(os.path.abspath('../'))
 from DataBase import DAO as DAO
+from DataBase import DBData as DBData
 
 # 結果のデータベース名
 RESULT_DB_NAME = 'Result.db'
@@ -19,7 +20,7 @@ COLUMN_LINE_COUNT = 'line_count'
 COLUMN_CLONE_RATE = 'clone_rate'
 
 # スキーマ定義
-TABLE_SCHEMA = f'''id INTEGER PRIMARY KEY AUTOINCREMENT,
+TABLE_SCHEMA = f'''{DBData.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
                 {COLUMN_FILE_NAME} TEXT,
                 {COLUMN_CLONE_LINES} TEXT,
                 {COLUMN_CLONE_LINE_COUNT} INTEGER,

@@ -5,7 +5,8 @@ import Analyzer.Source as Source
 import Analyzer.CloneSet as CloneSet
 
 sys.path.append(os.path.abspath('../'))
-from DataBase import DAO
+from DataBase import DAO as DAO
+from DataBase import DBData as DBData
 from Common import FileManager as FileManager
 
 ''' クローンとなっているかの2重リストを取得(ファイルID*行数)
@@ -36,7 +37,7 @@ def create_clone_line_flags(source_file_cur):
     clone_flags = {}
 
     # 全のファイルの行数を取得
-    all_files = source_file_cur.execute(f'SELECT id, lines FROM {Source.SourceFileData.TABLE_NAME}').fetchall()
+    all_files = DAO.get_columns(source_file_cur, Source.SourceFileData.TABLE_NAME, DBData.COLUMN_ID, Source.SourceFileData.COLUMN_LINE_COUNT)
 
     # 行数分のコードクローンになっているかのフラグを追加
     for row in all_files:

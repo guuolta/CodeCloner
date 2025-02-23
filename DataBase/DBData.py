@@ -5,8 +5,9 @@ sys.path.append(os.path.abspath('../'))
 from Common import PathManager
 from CCFinderSW import CCFinderSWData as CCFinderSWData
 
-
 DATA_BASE_FOLDER_NAME = 'DBs'
+
+COLUMN_ID = 'id'
 
 # 全クローンのデータベースを入れるフォルダ名
 CLONE_RATE_DB_FOLDER_NAME = '0_CloneRate'

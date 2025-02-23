@@ -5,6 +5,7 @@ import Analyzer.Result as Result
 
 sys.path.append(os.path.abspath('../'))
 from DataBase import DAO as DAO
+from DataBase import DBData as DBData
 
 # データベース名
 DB_NAME = 'CloneRate.db'
@@ -22,7 +23,7 @@ COLUMN_LINE_CLONE_COUNT = 'line_clone_count'
 COLUMN_LINE_CLONE_RATE = 'line_clone_rate'
 
 # スキーマ定義
-TABLE_SCHEMA = f'''id INTEGER PRIMARY KEY AUTOINCREMENT,
+TABLE_SCHEMA = f'''{DBData.COLUMN_ID} INTEGER PRIMARY KEY AUTOINCREMENT,
                 {COLUMN_PROJECT_NAME} TEXT,
                 {COLUMN_FILE_COUNT} INTEGER,
                 {COLUMN_FILE_CLONE_COUNT} INTEGER,
